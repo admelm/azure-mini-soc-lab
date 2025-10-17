@@ -14,8 +14,6 @@ A hands-on cloud SOC environment built using **Microsoft Azure** and **Sentinel*
 
 ---
 
-## ⚙️ Architecture
-![Architecture Diagram](docs/architecture.png)
 
 ### Components
 | Component | Purpose |
