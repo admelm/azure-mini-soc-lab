@@ -2,8 +2,6 @@
 
 A hands-on cloud SOC environment built using **Microsoft Azure** and **Sentinel**, designed to simulate real-world threat detection, investigation, and response — all on free-tier resources.
 
-> 💡 Inspired by Jared Medeiros' Medium tutorial, this implementation expands with my own configurations, custom detections, automation rules, and documentation for learning and portfolio presentation.
-
 ---
 
 ## 🎯 Objectives
