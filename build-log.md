@@ -6,7 +6,7 @@ Date: [4/1/2026]
 <img width="434" height="405" alt="image" src="https://github.com/user-attachments/assets/f4daef26-20bf-4501-a050-aa5a69b8a715" />
 
 - [x] soc-analyst user created in Entra ID
-- [x] Sentinel Reader role assigned via IAM — pending Phase 2 completion
+- [x] Sentinel Reader role assigned via IAM
 
 
 ## Phase 2 — SIEM Infrastructure
@@ -23,3 +23,6 @@ Date: [4/1/2026]
 
 - [x] UEBA enabled — Microsoft Entra ID selected as identity data source. Additional sources will show up as VMs and connectors are added in later phases. — screenshot:
 <img width="1191" height="486" alt="image" src="https://github.com/user-attachments/assets/0d67e70a-26de-4dd7-b1d7-b9a4da75530b" />
+
+## Phase 3 - Windows VM Setup And Log Ingestion
+Date: [4/1/2026]
