@@ -1,7 +1,16 @@
-## Phase 1 — Sentinel Setup
-Date: [today]
+## Phase 1 — Zero Trust Foundation
+Date: [4/1/2026]
+
+- [x] Resource group created (minisoc-rg) — East US
 - [x] Security Defaults enabled — enforces MFA across all accounts in tenant. Equivalent zero trust baseline for a single tenant. — screenshot: 
 <img width="434" height="405" alt="image" src="https://github.com/user-attachments/assets/f4daef26-20bf-4501-a050-aa5a69b8a715" />
+
+- [x] soc-analyst user created in Entra ID
+- [x] Sentinel Reader role assigned via IAM — pending Phase 2 completion
+
+
+## Phase 2 — SIEM Infrastructure
+Date: [4/1/2026]
 
 - [x] Log Analytics Workspace created (minisoc-ws) — screenshot: 
 <img width="436" height="395" alt="image" src="https://github.com/user-attachments/assets/5ef67a81-74c3-4793-bcf7-7600ab376495" />
