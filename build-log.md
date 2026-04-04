@@ -42,3 +42,9 @@ Date: [4/3/2026]
 
 - [x] Explicit Deny-RDP rule added at priority 100 — blocks port 3389 inbound from all internet sources. Recognizinng RDP as a common attack sector
 <img width="1124" height="64" alt="image" src="https://github.com/user-attachments/assets/1da22284-0d74-471f-af13-6075fff4ed08" />
+
+- [x] 
+- [x] 
+
+- [x] Data Collection Rule (minisoc-dcr) created — minisoc-vm-win added as resource, collecting All Security Events.
+<img width="392" height="270" alt="image" src="https://github.com/user-attachments/assets/937a5aa1-3b37-4255-8a6e-c1d0e624f4d2" />
