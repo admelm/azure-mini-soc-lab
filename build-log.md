@@ -43,8 +43,20 @@ Date: [4/3/2026]
 - [x] Explicit Deny-RDP rule added at priority 100 — blocks port 3389 inbound from all internet sources. Recognizinng RDP as a common attack sector
 <img width="1124" height="64" alt="image" src="https://github.com/user-attachments/assets/1da22284-0d74-471f-af13-6075fff4ed08" />
 
-- [x] 
-- [x] 
+- [x] Successfully connected to minisoc-vm-win via Azure Bastion — Windows Server 2022 desktop loaded, no public IP or RDP exposure.
+<img width="1905" height="992" alt="image" src="https://github.com/user-attachments/assets/8d32a8af-a475-49f9-837f-02cbc3ea1e03" />
+
+- [x] Sysmon64 installed and running on minisoc-vm-win using SwiftOnSecurity production ruleset — deep process and network telemetry now active.
+<img width="911" height="432" alt="image" src="https://github.com/user-attachments/assets/930a64e4-8c30-40b8-a180-c4bd55c33379" />
 
 - [x] Data Collection Rule (minisoc-dcr) created — minisoc-vm-win added as resource, collecting All Security Events.
 <img width="392" height="270" alt="image" src="https://github.com/user-attachments/assets/937a5aa1-3b37-4255-8a6e-c1d0e624f4d2" />
+
+- [x] Log ingestion validated — 47 distinct EventID/Computer combinations returned from minisoc-vm-win including EventID 4688 (process creation) confirming Sysmon telemetry is active and flowing through AMA → DCR → Sentinel.
+<img width="768" height="316" alt="image" src="https://github.com/user-attachments/assets/0ce41a32-79c7-4023-9d07-94743e12532d" />
+
+## Phase 4 - Attack Simulation — Atomic Red Team
+Date: [4/7/2026]
+
+- [x] Invoke-AtomicTest command confirmed available — Atomic Red Team v2.1.0 installed on minisoc-vm-win, MITRE ATT&CK simulation framework ready.
+<img width="1033" height="121" alt="image" src="https://github.com/user-attachments/assets/cae6e728-37db-4016-b9ea-d84a9812ea18" />
