@@ -79,4 +79,19 @@ Date: [4/7/2026]
 <img width="1013" height="408" alt="image" src="https://github.com/user-attachments/assets/06cb252c-a04e-47b2-b2b9-fc0e102a9ea8" />
 
 
+## Phase 5 - Detection Engineering - Custom KQL detections mapped
 
+- [x] Built-in analytics rules enabled — Process Execution Frequency Anomaly, NRT Process Execution, and NRT Base64 Encoded detection covering T1059 execution techniques.
+<img width="790" height="625" alt="image" src="https://github.com/user-attachments/assets/3b30aa35-927d-4ab8-aef4-812e3bfbe9fa" />
+
+- [x] Custom detection Rule 1 — Brute Force with Successful Logon active in Sentinel. Scheduled query running every 5 minutes, detecting T1110 credential brute force with MITRE ATT&CK mapping.
+<img width="966" height="771" alt="image" src="https://github.com/user-attachments/assets/1ad037d1-ac1c-4515-b6a6-8027c4ae470a" />
+<img width="869" height="543" alt="image" src="https://github.com/user-attachments/assets/3481cb78-9005-40b9-9b2a-3baa216ee2a8" />
+
+<img width="810" height="243" alt="image" src="https://github.com/user-attachments/assets/2d157a22-cccd-470a-8800-e28ddec42c2b" />
+<img width="1330" height="498" alt="image" src="https://github.com/user-attachments/assets/757193e3-0ea4-410b-b853-7b97f6953609" />
+<img width="792" height="297" alt="image" src="https://github.com/user-attachments/assets/34d0f45d-b2dd-4e17-96b1-fc4a3951a557" />
+
+
+- [x]
+- [x]
