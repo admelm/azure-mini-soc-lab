@@ -93,5 +93,48 @@ Date: [4/7/2026]
 <img width="792" height="297" alt="image" src="https://github.com/user-attachments/assets/34d0f45d-b2dd-4e17-96b1-fc4a3951a557" />
 
 
-- [x]
-- [x]
+- [x] Custom detection Rule 2 — Privilege Escalation via Group 
+      Modification active in Sentinel. Severity: High | Tactic: 
+      Privilege Escalation | T1078. Detects accounts added to 
+      Administrators, Domain Admins, Remote Desktop Users groups.
+  <img width="1681" height="1239" alt="image" src="https://github.com/user-attachments/assets/2bd41835-f0ee-409d-b58c-113a0ed17b94" />
+  <img width="1510" height="77" alt="image" src="https://github.com/user-attachments/assets/db1e067c-bb5d-49d4-9013-69b5fd3e1730" />
+
+
+- [x] Rule 3: Living-Off-the-Land Binary Execution — active
+      Severity: High | T1059, T1218 | Entity mapping: Account, Host
+<img width="697" height="575" alt="image" src="https://github.com/user-attachments/assets/c184dbe0-3af2-4711-8825-2029b9eaa6a0" />
+<img width="1517" height="68" alt="image" src="https://github.com/user-attachments/assets/5b92ebbd-e468-455f-8fac-0cd6e7c9187a" />
+
+
+## Phase 6 - Advanced SOAR Automation - IP reputation lookup, conditional escalation, and auto-tagging playbooks
+
+- [x] Logic App SOC-IP-Reputation-Check deployed — Consumption tier, Stateful workflow, foundation for AbuseIPDB IP reputation SOAR playbook.
+<img width="2173" height="538" alt="image" src="https://github.com/user-attachments/assets/94f182e0-4f15-432c-bddf-a4164b770f68" />
+
+- [x] Logic App trigger configured — Microsoft Sentinel incident trigger starts playbook automatically on every new alert
+<img width="1580" height="846" alt="image" src="https://github.com/user-attachments/assets/ea731444-a89e-45b3-a519-5f5fd787dda1" />
+
+- [x] Logic App - Add comment to incident action configured with dynamic content pulling Incident Title, Severity, and Tactics from Sentinel trigger. Auto-triage comment posts automatically on every new incident.
+<img width="1376" height="1064" alt="image" src="https://github.com/user-attachments/assets/ecf3af20-2541-4dc9-b312-8d0949ce3c2e" />
+
+- [x] Logic App - Update incident action — automatically sets status to Active, preserves original severity, and tags incident as AUTO-TRIAGED on every new Sentinel alert.
+<img width="622" height="1075" alt="image" src="https://github.com/user-attachments/assets/21bf5e86-daaf-4ee8-9fd4-d93c1cf56573" />
+
+- [x] SOC-AutoTriage Logic App playbook complete — 3-step automated workflow: trigger on incident → post auto-triage comment → set status Active with AUTO-TRIAGED tag.
+<img width="981" height="717" alt="image" src="https://github.com/user-attachments/assets/a77434a7-a623-4e98-9727-d5740a1f2e27" />
+
+- [x] Automation rule Auto-Run-Triage configured - triggers SOC-IP-Reputation-Check Logic App playbook automatically on every new Sentinel incident. Order 1 ensures it runs first before any other automation.
+<img width="1069" height="1180" alt="image" src="https://github.com/user-attachments/assets/7b20bf65-484e-4814-8395-b15554ee13e9" />
+
+- [x] Auto-Close-Informational automation rule — conditionally closes Informational severity incidents automatically, reducing analyst queue noise. Order 2 runs after triage playbook.
+<img width="1115" height="1243" alt="image" src="https://github.com/user-attachments/assets/6f2b791a-9c2d-47ab-a334-812afd555619" />
+
+Notes: AbuseIPDB integration attempted but deferred — entity 
+extraction via For each loop not supported in newer Logic Apps 
+designer with Sentinel incident trigger. Documented as known 
+limitation. Core auto-triage SOAR workflow fully operational.
+
+
+
+
