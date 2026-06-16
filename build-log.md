@@ -213,4 +213,12 @@ Date: June 2, 2026
       Coverage expands to 11 techniques after Phase 10 
       (Linux VM + Azure Activity Logs).
 
+## Phase 10 - Linux VM + Azure Activity Logs
+
+- [x] Linux VM deployed successfully. minisoc-vm-linux | Ubuntu Server 24.04 LTS | B1s | East US | No public IP | Same VNet as Windows VM (minisoc-vm-win-vnet). Network interface and NSG created automatically.
+<img width="1148" height="445" alt="image" src="https://github.com/user-attachments/assets/0786a8b5-9fc4-4ed9-b8fb-e10ae1414a01" />
+
+- [x] Linux VM NSG hardened. DENY-ALL-INBOUND rule added at priority 100 which blocks all inbound traffic from internet. Bastion access unaffected because it connects via dedicated AzureBastionSubnet service path. Warnings about VNet and load balancer traffic acknowledged, no load balancer in use, VNet isolation intentional for lab security.
+<img width="1532" height="287" alt="image" src="https://github.com/user-attachments/assets/8e1892fb-749d-4b4f-b272-4a88f1cff56c" />
+
 
