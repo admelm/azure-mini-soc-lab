@@ -192,3 +192,25 @@ Date: June 2, 2026
       4. Evidence preservation — Capture memory dump and process list before any remediation. Export relevant Sentinel logs and KQL results as PDF for case file.
       5. UEBA review — Check entity anomaly score for involved account. Flag account for enhanced monitoring post-incident.
       Lab note: Containment steps documented as theoretical — activity confirmed contained to single host within controlled simulation window. No live threat requiring active containment. VM already deallocated post-simulation.
+
+## Phase 9 — MITRE ATT&CK Coverage Map
+- [x] ATT&CK Navigator heatmap built — Enterprise ATT&CK v19.
+      8 techniques mapped across 6 tactics.
+      Green = fully detected by custom/built-in rule (5 techniques)
+      Yellow = hunt query coverage only (2 techniques)
+      Red = attempted, environment limitation prevented detection 
+      (1 technique — SMB lateral movement, single-VM environment)
+<img width="2121" height="1313" alt="image" src="https://github.com/user-attachments/assets/3b0de9ad-7631-4c21-a063-52b58bd6b97b" />
+
+- [x] Detection coverage statement:
+      Detection rules and hunt queries cover 8 MITRE ATT&CK 
+      techniques across 6 tactics: Credential Access, Initial 
+      Access, Execution, Persistence, Privilege Escalation, 
+      Defense Evasion, Discovery, and Lateral Movement.
+      Log source: Windows Security Events via AMA + Sysmon.
+      5 techniques fully detected | 2 hunt query coverage only | 
+      1 attempted with single-VM environment limitation noted.
+      Coverage expands to 11 techniques after Phase 10 
+      (Linux VM + Azure Activity Logs).
+
+
