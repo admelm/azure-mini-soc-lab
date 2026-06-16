@@ -168,3 +168,27 @@ Date: June 2, 2026
 - [x] Hunt Query 3 — Credential Harvesting Signals: 0 results. Expected outcome. All T1003.001 LSASS dump attempts blocked by Windows Defender before process creation — no EventID 4688 generated for procdump, mimikatz, gsecdump, or lsass-related command lines. Hunt query infrastructure validated and functional; null result confirms Defender's endpoint protection layer successfully prevented credential harvesting tool execution. In a real environment with legacy AV or disabled Defender, this query would surface LSASS access attempts invisible to detection rules.
 <img width="746" height="641" alt="image" src="https://github.com/user-attachments/assets/c202110a-7e80-4c68-92b1-6f176ea6ccbf" />
 
+## Phase 8 - SOC Analyst Incident Workflow
+
+- [x] Phase 8 — Triage: Incident SOC-2026-001 (Living-Off-the-Land Binary Execution) assigned to analyst and set to In Progress. Severity confirmed High. Classification held as Unclassified pending investigation outcome. Triage decision: 21 correlated High alerts, MITRE T1059 + T1218 tactics, active device minisoc-vm-win which is credible incident, escalated to investigation.
+<img width="544" height="1453" alt="image" src="https://github.com/user-attachments/assets/5fb82180-ed59-472d-9e9f-5eb6a0669980" />
+
+- [x] Investigation: Advanced Hunting query results, 9 LOLBin execution events confirmed. Rule 3 KQL identified two distinct LOLBin patterns: rundll32.exe and cmd.exe both spawned by svchost.exe across 45-minute window (3:19–4:04 PM Jun 12). Account: WORKGROUP\minisoc-vm-win$ | Host: minisoc-vm-win. Parent-child chain svchost→cmd.exe and svchost→rundll32.exe confirmed suspicious — svchost does not legitimately spawn command interpreters. 9 matching events across simulation window. MITRE T1218 (rundll32 proxy execution) and T1059 (cmd execution) both evidenced.
+<img width="1662" height="1236" alt="image" src="https://github.com/user-attachments/assets/1255578d-21ee-4891-84f0-98bd63a3c0b3" />
+
+- [x] Closure: Incident ID 1 Living-Off-the-Land Binary Execution resolved. Status: Resolved | Classification: True Positive — Malicious User Activity | Tag: True-Positive | Assigned: adham#######. Closure note documents full investigation chain: 9 LOLBin events, svchost→rundll32/cmd parent-child chains, MITRE T1218+T1059 confirmed, activity contained to minisoc-vm-win, no lateral movement. Custom Rule 3 (LOTL detection) validated as correctly functioning. Incident lifecycle complete: Alert → Triage → Investigation → Containment → Closure.
+<img width="2150" height="1274" alt="image" src="https://github.com/user-attachments/assets/d80b12e0-5e84-4c68-9342-b915bde36709" />
+
+- [x] Activities Timeline: Three analyst comments posted documenting full incident lifecycle. Activity trail provides complete audit record of investigation steps, analyst decision points, and closure justification for SOC-2026-001.
+<img width="574" height="177" alt="image" src="https://github.com/user-attachments/assets/80441a50-2c88-459f-bf0d-057c7d9704cc" />
+
+- [x] UEBA checked: insufficient data sources for anomaly scoring in lab environment. Microsoft Entra ID sync enabled, Active Directory sync disabled. Most identity data sources not ingested to Sentinel like AAD Managed Identity, Service Principal, and Audit Logs all show "not ingested." UEBA behavioral baseline not available for minisoc-vm-win$ account. In production environment with full data source connectivity, UEBA would provide anomaly score for involved machine account. Documented as lab limitation.
+<img width="2012" height="1192" alt="image" src="https://github.com/user-attachments/assets/d622b25a-2bbe-49c7-a94c-373798425cca" />
+
+- [x] Containment in a real production environment:
+      1. Account containment — Disable WORKGROUP\minisoc-vm-win$ machine account in Entra ID immediately to prevent further authenticated activity from the compromised host.
+      2. Host isolation — Add NSG deny-all inbound/outbound rule to minisoc-vm-win's subnet, preserving only Bastion access for forensic investigation. This cuts off any C2 communication or lateral movement while keeping the host accessible for evidence collection.
+      3. Credential reset — Reset all local administrator credentials on minisoc-vm-win. Machine account password rotated via Group Policy.
+      4. Evidence preservation — Capture memory dump and process list before any remediation. Export relevant Sentinel logs and KQL results as PDF for case file.
+      5. UEBA review — Check entity anomaly score for involved account. Flag account for enhanced monitoring post-incident.
+      Lab note: Containment steps documented as theoretical — activity confirmed contained to single host within controlled simulation window. No live threat requiring active containment. VM already deallocated post-simulation.
