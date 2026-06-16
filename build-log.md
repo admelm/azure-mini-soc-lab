@@ -71,7 +71,7 @@ Date: [4/7/2026]
 <img width="825" height="146" alt="image" src="https://github.com/user-attachments/assets/1968f9a5-a80f-4e12-8e5c-6c74d92150de" />
 
 - [x] T1547.001 Reg Key Run executed successfully — Exit code 0, registry persistence technique completed, EventID 4657 (registry modification) generated.
-- [x] T1069.001 — no applicable atomic tests for Windows platform, skipped. Group enumeration coverage handled by hunt queries in Phase 7.
+- [x] T1069.001 — deferred from Phase 4, executed in Phase 7 as part of threat hunting simulation. Five sub-tests completed successfully generating EventID 4799.
 - [x] T1021.002 Map admin share — Exit code 2, network path not found. Expected in isolated single-VM environment 
 <img width="899" height="414" alt="image" src="https://github.com/user-attachments/assets/cd6d6da0-f24b-4a27-9949-f6552c951258" />
 
