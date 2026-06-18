@@ -221,4 +221,34 @@ Date: June 2, 2026
 - [x] Linux VM NSG hardened. DENY-ALL-INBOUND rule added at priority 100 which blocks all inbound traffic from internet. Bastion access unaffected because it connects via dedicated AzureBastionSubnet service path. Warnings about VNet and load balancer traffic acknowledged, no load balancer in use, VNet isolation intentional for lab security.
 <img width="1532" height="287" alt="image" src="https://github.com/user-attachments/assets/8e1892fb-749d-4b4f-b272-4a88f1cff56c" />
 
+- [x] Data Collection Rule minisoc-dcr-linux created via Syslog via AMA connector. minisoc-vm-linux added as target resource. Facilities configured: auth, authpriv, cron, kern, syslog — all set to LOG_WARNING minimum level. Azure Monitor Agent automatically deployed to VM as part of DCR creation. Validation passed.
+<img width="850" height="518" alt="image" src="https://github.com/user-attachments/assets/1cbb0b34-21c3-4523-a562-4500b4f4bef4" />
 
+- [x] Created new inbound rule to allow SSH traffic only from within the Vnet (including the bastion subnet) for linux connection.
+<img width="578" height="991" alt="image" src="https://github.com/user-attachments/assets/9f554986-46d5-42e1-a1ea-fac2cc1535d8" />
+
+- [x] NSG troubleshooting: Bastion-to-Linux-VM connection initially failed due to overly broad DENY-ALL-INBOUND rule blocking Bastion's internal SSH traffic. Root cause: unlike Windows VM (which only had a targeted RDP deny rule), Linux VM's deny-all rule blocked Bastion's SSH path on port 22. Fix: added ALLOW-BASTION-SSH rule at priority 100 (Source: VirtualNetwork service tag, Port: 22, Protocol: TCP), with DENY-ALL-INBOUND moved to priority 200. Demonstrates real NSG troubleshooting and the distinction between Bastion's browser-facing HTTPS connection (which bypasses NSG) versus Bastion-to-VM SSH traffic (which does not).
+<img width="2506" height="1288" alt="image" src="https://github.com/user-attachments/assets/b86551d3-00b2-4b56-b171-aff6b4ac3852" />
+
+- [x] T1110 Brute Force simulation (Linux) executed via SSH loop targeting nonexistent local account "baduser." 19 failed authentication attempts confirmed in /var/log/auth.log via grep validation. Simulates external SSH brute force attack pattern which is exactly the kind of automated credential-guessing traffic real internet-facing Linux servers receive constantly on port 22.
+<img width="1237" height="436" alt="image" src="https://github.com/user-attachments/assets/a4d64394-bda9-4107-8388-b61cd298b13c" />
+
+- [x] T1053 Scheduled Task/Job simulation executed. Cron entry added: * * * * * /bin/bash -c "id" that runs every minute, simulating attacker-established persistence via scheduled task. Confirmed via crontab -l. This technique mirrors Windows Scheduled Task abuse (T1053.005) covered earlier in Phase 4, demonstrating cross-platform persistence pattern recognition.
+<img width="1066" height="87" alt="image" src="https://github.com/user-attachments/assets/4ee5fee8-781a-42cd-ab29-94d639c67864" />
+
+- [x] T1548 Privilege Escalation reconnaissance executed. sudo -l revealed socadmin has unrestricted passwordless sudo access (NOPASSWD: ALL) which is default Azure cloud-init configuration for admin accounts. Notable finding: compromised SSH credentials for this account would grant immediate root access with no secondary authentication barrier. cat /etc/shadow correctly denied when run without sudo, confirming standard Linux file permission enforcement for non-privileged command execution.
+<img width="1300" height="188" alt="image" src="https://github.com/user-attachments/assets/45171b12-e942-4551-92e8-f6e680e47ff8" />
+
+- [x] Syslog ingestion validated successfully after troubleshooting. Initial query returned 0 results despite Heartbeat confirming AMA agent was running. Root cause: rsyslog service was running with config loaded prior to the forwarding rule (10-azuremonitoragent-omfwd.conf) being created so service required a restart to apply the new config. Fix: sudo systemctl restart rsyslog + sudo systemctl restart azuremonitoragent. Post-restart validation confirmed Syslog table receiving events from minisoc-vm-linux. Real-world lesson: service restarts are often required after agent/config installation, even when no error is logged.
+<img width="1215" height="294" alt="image" src="https://github.com/user-attachments/assets/89a2e77a-ff0f-404f-8649-59646e8a8b31" />
+
+- [x] Linux SSH Brute Force detection validated. KQL query returned 2 results: 11 failed auth attempts in 6:20 PM window, 7 in 6:10 PM window. SourceIP: 127.0.0.1 (localhost simulation) | Computer: minisoc-vm-linux. Threshold of ≥5 failures per 10-minute window successfully triggered. Full Linux Syslog pipeline confirmed operational: sshd → auth.log → rsyslog → AMA (port 28330) → Log Analytics → Sentinel Syslog table.
+<img width="1429" height="962" alt="image" src="https://github.com/user-attachments/assets/b4f87888-813d-4935-b8d5-da62fb3b2d8f" />
+
+- [x] Syslog ingestion troubleshooting: Three issues encountered and resolved.
+1 - rsyslog forwarding config existed but rsyslog needed restart to pick up the rule after AMA install — fixed with systemctl restart rsyslog
+2 - DCR severity filter set to LOG_WARNING — SSH auth failures on Ubuntu 24.04 log at LOG_INFO level, silently filtered before reaching Sentinel. Fixed by changing auth/authpriv facilities to LOG_DEBUG in DCR
+3 - Race condition on service restart — restarting AMA before rsyslog caused brief "connection refused" errors as port 28330 temporarily dropped. Fixed by restarting AMA first, then rsyslog after 10 second delay
+
+- [x]  Linux SSH Brute Force Detection rule active in Sentinel. Custom Rule 4: Scheduled query running every 10 minutes, looking back 15 minutes. Severity: Medium | Tactic: Credential Access | Technique: T1110 — Brute Force | Source: Syslog table (Linux). Rule validated against live attack simulation with 11 failed SSH attempts detected in 10-minute window, SourceIP extracted correctly. 8 total active analytics rules now running across Windows and Linux log sources.
+<img width="1554" height="514" alt="image" src="https://github.com/user-attachments/assets/5b617dc0-94ee-4ac5-bf22-5b9dc0aef8c9" />
