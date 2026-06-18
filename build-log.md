@@ -252,3 +252,9 @@ Date: June 2, 2026
 
 - [x]  Linux SSH Brute Force Detection rule active in Sentinel. Custom Rule 4: Scheduled query running every 10 minutes, looking back 15 minutes. Severity: Medium | Tactic: Credential Access | Technique: T1110 — Brute Force | Source: Syslog table (Linux). Rule validated against live attack simulation with 11 failed SSH attempts detected in 10-minute window, SourceIP extracted correctly. 8 total active analytics rules now running across Windows and Linux log sources.
 <img width="1554" height="514" alt="image" src="https://github.com/user-attachments/assets/5b617dc0-94ee-4ac5-bf22-5b9dc0aef8c9" />
+
+- [x] Azure Activity Logs connected via direct diagnostic setting. Initial policy assignment approach (via Sentinel connector wizard) left connector showing "Not connected", root cause: policy scoped to resource group rather than subscription, missing subscription-level Activity Logs. Fix: Monitor → Activity Log → Export Activity Logs → Add diagnostic setting "minisoc-activity-diag." Categories: Administrative, Security, Alert, Recommendation, Policy all enabled. Destination: minisoc-ws (East US). Direct diagnostic setting bypasses policy propagation delay and correctly captures subscription-level operations.
+<img width="1119" height="817" alt="image" src="https://github.com/user-attachments/assets/5edb7394-96b4-482d-b340-f3628b1bba80" />
+
+- [x] Azure Activity Logs validated in Sentinel. AzureActivity table confirmed receiving events — first entry captured the diagnostic setting creation itself (MICROSOFT.INSIGHTS/DIAGNOSTICSETTINGS/WRITE — Success) at 7:38 PM, demonstrating the pipeline captured its own creation
+<img width="2477" height="879" alt="image" src="https://github.com/user-attachments/assets/b30fe364-220e-4867-853a-529faabd8d5f" />
