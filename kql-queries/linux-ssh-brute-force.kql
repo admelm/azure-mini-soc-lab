@@ -1,0 +1,13 @@
+// Rule 4: Linux SSH Brute Force
+// MITRE: T1110 (Brute Force, Linux) | Severity: Medium | Frequency: Every 10 min | Lookback: 15 min
+// Source: Linux Syslog (minisoc-vm-linux)
+// Validated live: 11 failed SSH attempts detected in one 10-minute window during the Phase 10 attack simulation
+
+Syslog
+| where TimeGenerated > ago(1h)
+| where Facility == 'auth' and SeverityLevel == 'err'
+| where SyslogMessage contains 'Failed password' or SyslogMessage contains 'Invalid user'
+| extend SourceIP = extract(@'from ([0-9.]+)', 1, SyslogMessage)
+| summarize FailCount = count() by SourceIP, Computer, bin(TimeGenerated, 10m)
+| where FailCount >= 5
+| order by FailCount desc

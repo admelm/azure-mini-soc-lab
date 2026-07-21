@@ -1,0 +1,20 @@
+// Rule 1: Brute Force with Successful Logon
+// MITRE: T1110 (Brute Force) | Severity: Medium | Frequency: Every 5 min | Lookback: 1 hour
+// Source: Windows Security Events (minisoc-vm-win)
+
+let threshold   = 5;
+let timeWindow  = 1h;
+let FailedLogins = SecurityEvent
+    | where TimeGenerated > ago(timeWindow)
+    | where EventID == 4625
+    | where Account !endswith '$'                      // exclude machine accounts
+    | where Account !in ('svc_backup', 'svc_monitor')   // exclude known service accounts
+    | summarize FailCount = count() by Account, IpAddress, bin(TimeGenerated, 1h);
+let SuccessLogins = SecurityEvent
+    | where TimeGenerated > ago(timeWindow)
+    | where EventID == 4624
+    | summarize SuccessCount = count() by Account, IpAddress;
+FailedLogins
+| where FailCount >= threshold
+| join kind=inner (SuccessLogins) on Account, IpAddress
+| project Account, IpAddress, FailCount, SuccessCount, TimeGenerated

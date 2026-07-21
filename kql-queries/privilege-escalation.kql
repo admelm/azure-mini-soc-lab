@@ -1,0 +1,13 @@
+// Rule 2: Privilege Escalation via Group Modification
+// MITRE: T1069, T1078 | Severity: High | Frequency: Every 5 min
+// Source: Windows Security Events (minisoc-vm-win)
+
+SecurityEvent
+| where EventID in (4732, 4728, 4756)
+| where TargetUserName in ('Administrators', 'Domain Admins', 'Enterprise Admins',
+    'Remote Desktop Users', 'Backup Operators')
+| where SubjectUserName != 'SYSTEM'                    // exclude OS-generated events
+| extend Actor  = SubjectUserName
+| extend Target = MemberName
+| project TimeGenerated, Actor, Target, TargetUserName, Computer, EventID
+| order by TimeGenerated desc

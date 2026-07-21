@@ -1,0 +1,15 @@
+// Rule 3: Living-Off-the-Land Binary Execution
+// MITRE: T1059, T1218 | Severity: High | Frequency: Every 5 min
+// Source: Windows Security Events (minisoc-vm-win)
+// This rule fired on the real SOC-2026-001 incident, see incident-reports/SOC-2026-001-case-file.md
+
+SecurityEvent
+| where EventID == 4688
+| where NewProcessName has_any ('powershell.exe', 'cmd.exe', 'wscript.exe',
+    'cscript.exe', 'mshta.exe', 'regsvr32.exe', 'rundll32.exe', 'certutil.exe')
+| where ParentProcessName has_any ('winword.exe', 'excel.exe', 'outlook.exe',
+    'msiexec.exe', 'svchost.exe', 'wmiprvse.exe')
+| where CommandLine !contains 'ScheduledTask'          // reduce scheduled task noise
+| project TimeGenerated, Account, Computer, NewProcessName,
+    ParentProcessName, CommandLine
+| order by TimeGenerated desc
